@@ -1,0 +1,41 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+
+const Calculator = () => {
+  const [expression, setExpression] = useState("");
+  const [result, setResult] = useState(null);
+
+  const handleClick = (value) => {
+    setExpression((prev) => prev + value);
+  };
+
+  const calculate = () => {
+    try {
+      setResult(eval(expression));
+    } catch {
+      setResult("Error");
+    }
+  };
+
+  const clear = () => {
+    setExpression("");
+    setResult(null);
+  };
+
+  return (
+    <div className="p-4 max-w-sm mx-auto bg-white shadow-lg rounded-lg text-center">
+      <h2 className="text-xl font-bold mb-4">Calculator</h2>
+      <div className="p-2 border rounded mb-2 w-full text-right text-lg">{expression || "0"}</div>
+      <div className="grid grid-cols-4 gap-2">
+        {[...Array(10).keys(), "+", "-", "*", "/"].map((item) => (
+          <Button key={item} onClick={() => handleClick(item.toString())}>{item}</Button>
+        ))}
+        <Button onClick={clear}>C</Button>
+        <Button onClick={calculate}>=</Button>
+      </div>
+      {result !== null && <h3 className="mt-4 text-lg font-semibold">Result: {result}</h3>}
+    </div>
+  );
+};
+
+export default Calculator;
